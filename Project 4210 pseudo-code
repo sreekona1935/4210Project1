@@ -1,0 +1,43 @@
+Part A — Pseudo-code
+Sree Kona, Zachary Wehbe
+
+
+This function will be responsible for converting a job sequence into a detailed operation schedule with start/end times
+allocate_ops_to_machines(job_sequence, proc_times, M)
+J = number of jobs (job_sequence.size())
+N = number of operations per job (width of proc_times - 1)
+
+machines_available = number of machines available
+job_ops = the current operation a job is on (job[0 … n])
+
+schedule = empty 2D array
+
+For jobs j in job_sequence:
+	For ops o in N:
+		//Assign an operation to a machine using o mod M
+			m = o mod M
+            //we can only assign a new operation if the machine is not busy,  and the previous job is complete
+			If machines_available[m] is not busy AND job_ops[o-1] is done:
+				//start the operation!
+				machines_available[m] = o
+                job_ops(o) = busy
+				start = process_operation(o) //signals that this operation has started, and when the operation has started processing
+
+				end = start + proc_times[j][o]
+
+				//populate schedule
+				schedule[j][o] = (m,j,start,end) //store machine, job, start and end times
+
+				//make machine available again
+				machines_available[m] = free
+				//inform operation is done
+				job_ops[o] = free
+
+return schedule //return operation schedule
+
+
+
+What is a makespan? - The maximum completion time across all jobs/operations.
+Returns the makespan value of a single job/operation
+compute_makespan(schedule)
+	PSEUDO CODE GOES HERE
