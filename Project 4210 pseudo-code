@@ -35,9 +35,60 @@ For jobs j in job_sequence:
 
 return schedule //return operation schedule
 
+	simulated_annealing(job_sequence,proc_times,J,M):
+		T = 1000
+		cooling_value = 0.95
+		iter = 100 //number of iterations per temperature
+		T_min = 0.01//end condition
+
+		//permutation. Swap random jobs
+		swap(job_sequence[randomjob],job_sequence[randomjob])
+
+		current_sequence = job_sequence
+		current_cost = compute_makespan(allocate_ops_to_machines(job_sequence,proc_times,M)) //get the inital cost
+
+		//store the max sequence and cost
+		best_sequence = current_sequence
+		best_cost = current_cost
+
+		while T > T_min: //run until temperature is cooled
+
+			for it in iter: //loop over number of iterations per temperature
+
+				neighbor_sequence = copy(current_sequence)
+				//swap two random jobs
+				swap(neighbor_sequence[randomjob],neighbor_sequence[randomjob])
+				neighbor_cost = compute_makespan(allocate_ops_to_machines(neighbor_sequence,proc_times,M)
+
+				//Choose to accept for reject the change
+				C = neighbor_cost - current_cost
+				if C < 0:
+					current_sequence = neighbor_sequence
+					current_cost = neighbor_cost
+				Else:
+					randomly choose to select, or not to select
+
+				//NOT COMPLETE
+
+
+
+
+
 
 
 What is a makespan? - The maximum completion time across all jobs/operations.
 Returns the makespan value of a single job/operation
 compute_makespan(schedule)
-	PSEUDO CODE GOES HERE
+	return schedule->end // retuns the end time, when the entire schedule is completed
+
+
+simulated_annealing()        <- decides WHICH job_sequence to try
+		|
+        V
+allocate_ops_to_machines()   <- builds the schedule FOR that sequence
+        |
+		V
+compute_makespan()           <- scores the schedule
+        |
+        V
+result fed back to SA
