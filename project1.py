@@ -7,21 +7,25 @@ import math
 
 
 def allocate_ops_to_machines(job_sequence, proc_times,M):
-    numJobs = len(job_sequence)
-    numOps = len(process_times[0])
 
+    #declare number of jobs and operations based on input data
+    numJobs = len(job_sequence)
+    numOps = len(proc_times[0])
+
+    #array storing what mechine is available at what time, initialized to 0 for all machines
     machine_available = [0] * M
 
-    job_available = [0] * len(process_times)
+    #array storing when each job is available to be processed, initialized to 0 for all jobs
+    job_available = [0] * len(proc_times)
 
     schedule = []
 
     for job in job_sequence:
-        for p in range(ops):
+        for p in range(numOps):
             machine = p % M
 
             start = max(machine_available[machine], job_available[job])
-            end = start + process_times[job][p]
+            end = start + proc_times[job][p]
 
             schedule.append({
                 "job": job,
@@ -31,20 +35,18 @@ def allocate_ops_to_machines(job_sequence, proc_times,M):
                 "end": end
             })
 
+            #free the machine and job after processing the operation
             machine_available[machine] = end
             job_available[job] = end
 
     return schedule 
 
 def simulated_annealing(job_sequence, proc_times, M):
-    pass
+    return allocate_ops_to_machines(job_sequence, proc_times, M)
+
 
 def compute_makespan(schedule):
-    pass
-
-
-
-
+    return max(op["end"] for op in schedule)
 
 
 
