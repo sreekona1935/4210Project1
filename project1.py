@@ -1,5 +1,36 @@
+import random
+import math
+
+
 def allocate_ops_to_machines(job_sequence, proc_times,M):
-    pass
+    numJobs = len(job_sequence)
+    numOps = len(process_times[0])
+
+    machine_available = [0] * M
+
+    job_available = [0] * len(process_times)
+
+    schedule = []
+
+    for job in job_sequence:
+        for p in range(ops):
+            machine = p % M
+
+            start = max(machine_available[machine], job_available[job])
+            end = start + process_times[job][p]
+
+            schedule.append({
+                "job": job,
+                "operation": p,
+                "machine": machine,
+                "start": start,
+                "end": end
+            })
+
+            machine_available[machine] = end
+            job_available[job] = end
+
+    return schedule 
 
 def simulated_annealing(job_sequence, proc_times, M):
     pass
