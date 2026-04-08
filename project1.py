@@ -100,6 +100,9 @@ def compute_makespan(schedule):
 
 
 def main():
+
+    # To make results repeatable
+    random.seed(11)
     # Example usage
     job_sequence = [0,1,2,3,4,5]  # Job IDs
     #hardcoded processing times
