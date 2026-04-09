@@ -4,6 +4,7 @@
 
 import random
 import math
+import sys
 
 
 def allocate_ops_to_machines(job_sequence, proc_times,M):
@@ -100,23 +101,39 @@ def compute_makespan(schedule):
 
 
 def main():
+    if len(sys.argv) != 2:
+        print("Usage: python project1.py <proc_times.txt>")
+        sys.exit(1)
+    
+    input_file = sys.argv[1]
 
     # To make results repeatable
     random.seed(11)
-    # Example usage
-    job_sequence = [0,1,2,3,4,5]  # Job IDs
-    #hardcoded processing times
-    proc_times = [[5,2,7,4], [3,6,2,5], [4,5,3,6],[2,4,6,3],[7,3,5,2],[6,7,4,5]]  #processing times for each job on each machine
-    M = 4  #number of machines
+    #read processing times from file and store in a 2D list
+    proc_times = []
+    with open(input_file, "r") as file:
+        for line in file:
+            proc_times.append(list(map(int, line.split(',')))[1:])
+    job_sequence = list(range(len(proc_times)))  #initial job sequence based on the number of jobs
+    M = input("Enter the number of machines: ")  #number of machines input by user
+    M = int(M)
 
     current_schedule = allocate_ops_to_machines(job_sequence, proc_times, M)
     print("Current Job Sequence:", job_sequence)
-    print("Current Schedule:", current_schedule)
+    print("Current Schedule:")
+    for op in current_schedule:
+        print(f"  Job {op['job']}, Operation {op['operation']}, Machine {op['machine']}, Start {op['start']}, End {op['end']}")
     print("Current Makespan:", compute_makespan(current_schedule))
+
+    print("\n")
 
     best_sequence, best_schedule = simulated_annealing(job_sequence, proc_times, M)
     print("Best Job Sequence:", best_sequence)
-    print("Best Schedule:", best_schedule)
+    print("Best Schedule:")
+    for op in best_schedule:
+        print(f"  Job {op['job']}, Operation {op['operation']}, Machine {op['machine']}, Start {op['start']}, End {op['end']}")
     print("Best Makespan:", compute_makespan(best_schedule))
+
+    print(compute_makespan(current_schedule) - compute_makespan(best_schedule), "less than the initial solution.")
 
 main()
