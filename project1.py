@@ -108,7 +108,7 @@ def main():
     input_file = sys.argv[1]
 
     # To make results repeatable
-    random.seed(11)
+    random.seed(42)
     #read processing times from file and store in a 2D list
     proc_times = []
     with open(input_file, "r") as file:
